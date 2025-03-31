@@ -14,6 +14,10 @@ let subButton = document.getElementById("subButton");
 
 subButton.addEventListener("click" , validateName)
 subButton.addEventListener("click" , validateCard)
+subButton.addEventListener("click" , validateNumber)
+subButton.addEventListener("click" , validateMonth)
+subButton.addEventListener("click" , validateYear)
+subButton.addEventListener("click" , validateCVC)   
 function validateName() {
    let cardName = document.getElementById("cardName");
    if (cardName.validity.valueMissing) {
@@ -42,17 +46,51 @@ function validateNumber() {
    else if (cNum.validity.patternMismatch) {
       cNum.setCustomValidity("Enter a valid card number")
    }
+   else if (luhn(cNum.value === false)) {
+      cNum.setCustomValidity("enter a legitimate card number")
+   }
    else {
       cNum.setCustomValidity("")
    }
 }
 
+function validateMonth () {
+   let month = document.getElementById("expMonth");
+   if (month.selectedIndex === 0) {
+      month.setCustomValidity("Select the expiration month")
+   }
+   else {
+      month.setCustomValidity("")
+   }
+}
 
+function validateYear () {
+   let year = document.getElementById("expYear")
+   if (year.selectedIndex === 0) {
+      year.setCustomValidity("Select the expiration year");
+   }
+   else {
+      year.setCustomValidity("")
+   }
+}
 
+function validateCVC() {
+   let card = document.querySelector('input[name="credit"]:checked').value;
+   let cvc = document.getElementById("cvc")
 
-
-
-
+   if(cvc.validity.valueMissing) {
+      cvc.setCustomValidity("Enter your CVC number")
+   }
+   else if ((card === "amex") && !(/^\d{4}$/.test(cvc.value))) {
+      cvc.setCustomValidity("Enter a 4 digit number")
+   }
+   else if ((card !== "amex") && !(/^\d{4}$/.test(cvc.value))) {
+      cvc.setCustomValidity("Enter a 3 digit number")
+   }
+   else {
+      cvc.setCustomValidity("")
+   }
+}
 
 
 
